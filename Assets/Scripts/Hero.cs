@@ -6,7 +6,7 @@ public class Hero : MonoBehaviour
 {
 	SkeletonAnimation _skeleton;
 
-	 Rigidbody2D _rigidbody;
+	Rigidbody2D _rigidbody;
 
 	public float speed = 15.0f;
 
@@ -17,7 +17,7 @@ public class Hero : MonoBehaviour
 
 	GameObject fireEffect;
 
-	GameObject _princess,_coin, _target,_sword,_chest;
+	GameObject _princess, _coin, _target, _sword, _chest;
 
 	float moveHorizontal, moveVertical = 0.0f;
 
@@ -55,7 +55,7 @@ public class Hero : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		
+
 
 		_skeleton.AnimationState.SetAnimation(0, "idle", true);
 
@@ -77,7 +77,7 @@ public class Hero : MonoBehaviour
 
 		InvokeRepeating("SeekTarget", 2.0f, 0.5f);
 		InvokeRepeating("SeekSword", 2.0f, 0.5f);
-		
+
 
 	}
 
@@ -88,41 +88,39 @@ public class Hero : MonoBehaviour
 		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
 			return;
 
-		
-
 		if (_target != null)
 		{
 			if (_target.tag == "Coin")
 			{
-                bool _canGo = false;
-                _hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
-                      transform.position.y + 0.5f, transform.position.z)
-                    , -Vector2.right * transform.localScale.x, 0.5f,
-                    LayerMask.GetMask("Static"));
-                Debug.DrawLine(new Vector3(transform.position.x - 0.5f * transform.localScale.x,
-                  transform.position.y, transform.position.z), new Vector3(transform.position.x - 1.0f * transform.localScale.x,
-                  transform.position.y,transform.position.z) , Color.red);
-                if (_hitWall.collider != null)
-                {
-                    if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
-                        _canGo = false;
-                    else
-                        _canGo = true;
-                    //Debug.Log("TAG" + _hitWall.collider.tag);
-                }
-                else
-                {
-                   // Debug.Log("GO");
-                    _canGo = true;
-                }
-               
+				bool _canGo = false;
+				_hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
+					transform.position.y + 0.5f, transform.position.z)
+					, -Vector2.right * transform.localScale.x, 0.5f,
+					LayerMask.GetMask("Static"));
+				Debug.DrawLine(new Vector3(transform.position.x - 0.5f * transform.localScale.x,
+				  transform.position.y, transform.position.z), new Vector3(transform.position.x - 1.0f * transform.localScale.x,
+				transform.position.y, transform.position.z), Color.red);
+				if (_hitWall.collider != null)
+				{
+					if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
+						_canGo = false;
+					else
+						_canGo = true;
+					//Debug.Log("TAG" + _hitWall.collider.tag);
+				}
+				else
+				{
+					// Debug.Log("GO");
+					_canGo = true;
+				}
 
-                if (_target.GetComponent<Gold>().isGround && transform.position.y >= _target.transform.position.y && _canGo)
+
+				if (_target.GetComponent<Gold>().isGround && transform.position.y >= _target.transform.position.y && _canGo)
 				{
 					reachTarget = true;
 					moveHorizontal = (transform.position.x > _target.transform.position.x) ? -1.0f : 1.0f;
-				}	
-					
+				}
+
 
 				/*
 				if(Vector3.Distance(transform.position,_target.transform.position) < 2.0f)
@@ -130,55 +128,55 @@ public class Hero : MonoBehaviour
 				else
 				{
 					moveHorizontal = 1.0f;
-				}	
+				}
 				*/
 			}
-			else if(_target.tag == "Princess" && Vector3.Distance(transform.position, _target.transform.position) < 3.0f && _target.transform.position.y < -2.0f)
+			else if (_target.tag == "Princess" && Vector3.Distance(transform.position, _target.transform.position) < 3.0f && _target.transform.position.y < -2.0f)
 			{
-                bool _canGo = false;
-                _hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
-                       transform.position.y + 0.5f, transform.position.z)
-                     , -Vector2.right * transform.localScale.x, 0.5f,
-                     LayerMask.GetMask("Static"));
-                if (_hitWall.collider != null)
-                {
-                    if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
-                        _canGo = false;
-                    else
-                        _canGo = true;
-                   // Debug.Log("TAG" + _hitWall.collider.tag);
-                }
-                else
-                {
-                   // Debug.Log("GO");
-                    _canGo = true;
-                }
+				bool _canGo = false;
+				_hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
+					transform.position.y + 0.5f, transform.position.z)
+					 , -Vector2.right * transform.localScale.x, 0.5f,
+					LayerMask.GetMask("Static"));
+				if (_hitWall.collider != null)
+				{
+					if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
+						_canGo = false;
+					else
+						_canGo = true;
+					// Debug.Log("TAG" + _hitWall.collider.tag);
+				}
+				else
+				{
+					// Debug.Log("GO");
+					_canGo = true;
+				}
 
-				
+
 
 				if (_canGo)
-                {
-                    reachTarget = true;
-                    moveHorizontal = (transform.position.x > _target.transform.position.x) ? -1.0f : 1.0f;
-                }
+				{
+					reachTarget = true;
+					moveHorizontal = (transform.position.x > _target.transform.position.x) ? -1.0f : 1.0f;
+				}
 
 			}
-			else if(_target.tag == "Princess")
+			else if (_target.tag == "Princess")
 			{
 				bool _nearPrincess = false;
 
 				RaycastHit2D _hitPrincessLeft = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
-					   transform.position.y + 0.5f, transform.position.z)
+					transform.position.y + 0.5f, transform.position.z)
 					 , -Vector2.right * transform.localScale.x, 1.0f,
-					 LayerMask.GetMask("Hero"));
+					LayerMask.GetMask("Hero"));
 
 				RaycastHit2D _hitPrincessRight = Physics2D.Raycast(new Vector3(transform.position.x + 0.35f * transform.localScale.x,
-					   transform.position.y + 0.5f, transform.position.z)
+					transform.position.y + 0.5f, transform.position.z)
 					 , -Vector2.left * transform.localScale.x, 1.0f,
-					 LayerMask.GetMask("Hero"));
+					LayerMask.GetMask("Hero"));
 
 				Debug.DrawLine(new Vector3(transform.position.x + 0.35f * transform.localScale.x,
-					   transform.position.y + 0.5f, transform.position.z),
+					transform.position.y + 0.5f, transform.position.z),
 					   new Vector3(transform.position.x + 0.35f * transform.localScale.x, transform.position.y + 0.5f, transform.position.z) - Vector3.left * transform.localScale.x, Color.white);
 
 				if ((_hitPrincessLeft.collider != null))
@@ -187,13 +185,13 @@ public class Hero : MonoBehaviour
 					{
 						//Debug.Log("HIT PRINCESS");
 						_nearPrincess = true;
-					}	
-						
+					}
+
 				}
 
 				if ((_hitPrincessRight.collider != null))
 				{
-					if ( _hitPrincessRight.collider.tag == "Princess")
+					if (_hitPrincessRight.collider.tag == "Princess")
 					{
 						//Debug.Log("HIT PRINCESS");
 						_nearPrincess = true;
@@ -215,37 +213,37 @@ public class Hero : MonoBehaviour
 
 				if (_target.GetComponent<Gold>().isGround && transform.position.y >= (_target.transform.position.y - 0.5f))
 				{
-                    bool _canGo = false;
-                    _hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
-                      transform.position.y + 0.5f, transform.position.z)
-                    , -Vector2.right * transform.localScale.x, 0.5f,
-                    LayerMask.GetMask("Static"));
+					bool _canGo = false;
+					_hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.35f * transform.localScale.x,
+					transform.position.y + 0.5f, transform.position.z)
+					, -Vector2.right * transform.localScale.x, 0.5f,
+					LayerMask.GetMask("Static"));
 
-                    if (_hitWall.collider != null)
-                    {
-                        if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
-                            _canGo = false;
-                        else
-                            _canGo = true;
-                        //Debug.Log("TAG" + _hitWall.collider.tag);
-                    }
-                    else
-                    {
-                        //Debug.Log("GO");
-                        _canGo = true;
-                    }
+					if (_hitWall.collider != null)
+					{
+						if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin"))
+							_canGo = false;
+						else
+							_canGo = true;
+						//Debug.Log("TAG" + _hitWall.collider.tag);
+					}
+					else
+					{
+						//Debug.Log("GO");
+						_canGo = true;
+					}
 
-                    if(_canGo)
-                    {
-                        reachTarget = true;
-                        moveHorizontal = (transform.position.x > _target.transform.position.x) ? -1.0f : 1.0f;
-                    }
+					if (_canGo)
+					{
+						reachTarget = true;
+						moveHorizontal = (transform.position.x > _target.transform.position.x) ? -1.0f : 1.0f;
+					}
 
 				}
 			}
 
 
-			}
+		}
 	}
 
 	void SeekSword()
@@ -272,19 +270,26 @@ public class Hero : MonoBehaviour
 	void FixedUpdate()
 	{
 		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		{
 			return;
+		}
 		if (_isWin)
+		{
 			return;
+		}
 		if (isDied)
+		{
 			return;
+		}
 		if (state == PlayerState.Attack)
+		{
 			return;
-
-        _hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.3f * transform.localScale.x,
-                 transform.position.y + 0.5f, transform.position.z)
-               , -Vector2.right * transform.localScale.x, 0.1f,
-               LayerMask.GetMask("Static"));
-        if (_hitWall.collider != null)
+		}
+		_hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.3f * transform.localScale.x,
+				transform.position.y + 0.5f, transform.position.z)
+			   , -Vector2.right * transform.localScale.x, 0.1f,
+			LayerMask.GetMask("Static"));
+		if (_hitWall.collider != null)
 		{
 			if ((_hitWall.collider.tag == "Ground" || _hitWall.collider.tag == "Pin") && reachTarget)
 			{
@@ -324,8 +329,8 @@ public class Hero : MonoBehaviour
 		switch (this.state)
 		{
 			case PlayerState.Idle:
-				if(!hasWeapon)
-				    _skeleton.AnimationState.SetAnimation(0, "idle", true);
+				if (!hasWeapon)
+					_skeleton.AnimationState.SetAnimation(0, "idle", true);
 				else
 					_skeleton.AnimationState.SetAnimation(0, "idle_sword", true);
 				//this.StopMoving();
@@ -381,9 +386,7 @@ public class Hero : MonoBehaviour
 			SwitchState(PlayerState.Win);
 			GameManager.instance.GameWin();
 			SoundManager.Instance.Play(SoundManager.Instance._coinDrop1);
-
 		}
-
 
 		if (collision.gameObject.tag == "Sword")
 		{
@@ -401,13 +404,13 @@ public class Hero : MonoBehaviour
 				//GameManager.instance.isGameWin = true;
 				if (transform.position.x > collision.transform.position.x)
 					this.transform.localScale = new Vector3(1, 1, 1);
-				else 
+				else
 					this.transform.localScale = new Vector3(-1, 1, 1);
 				SwitchState(PlayerState.Attack);
 				collision.gameObject.GetComponent<Goblin>().GetDamage();
 				StartCoroutine(ReleaseAttack());
-				
-					
+
+
 			}
 			else
 			{
@@ -464,7 +467,7 @@ public class Hero : MonoBehaviour
 				UIManager._instance.UpdateLife(GameManager.instance._life);
 				GameManager.instance.GameOver();
 			}
-			
+
 
 		}
 
@@ -494,8 +497,8 @@ public class Hero : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Rock" && !_isWin && !isDied)
 		{
-			if(moveHorizontal != 0.0f)
-			_rigidbody.AddForce(new Vector2(0.0f, 150.0f));
+			if (moveHorizontal != 0.0f)
+				_rigidbody.AddForce(new Vector2(0.0f, 150.0f));
 		}
 	}
 
@@ -510,6 +513,6 @@ public class Hero : MonoBehaviour
 			GameManager.instance.GameWin();
 		}
 		else
-		SwitchState(PlayerState.Idle);
+			SwitchState(PlayerState.Idle);
 	}
 }

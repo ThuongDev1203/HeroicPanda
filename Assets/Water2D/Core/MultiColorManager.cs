@@ -118,7 +118,8 @@
         }
 
 
-        public static void SetColorScheme(int scheme, Material material, Color fillColor, Color strokeColor, float AlphaCutoff, float AlphaStroke) {
+        public static void SetColorScheme(int scheme, Material material, Color fillColor, Color strokeColor, float AlphaCutoff, float AlphaStroke)
+        {
 
             Initialize(fillColor);
             instance._arrayColors[(scheme - 1) * 2] = fillColor;

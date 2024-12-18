@@ -6,11 +6,11 @@ namespace Water2D
     [ExecuteInEditMode]
     public class MetaballCameraEffect : MonoBehaviour
     {
-       
+
 
         //public Shader blurShader = null;
 
-        
+
         public Material cutOutMaterial;
 
         public Camera bgCamera;
@@ -25,15 +25,16 @@ namespace Water2D
 
         private void OnEnable()
         {
-			if (Screen.width > 0 && Screen.height > 0) {
-				bgTargetTexture = new RenderTexture (Screen.width, Screen.height, 16);
-				bgCamera.targetTexture = bgTargetTexture;
-			}
+            if (Screen.width > 0 && Screen.height > 0)
+            {
+                bgTargetTexture = new RenderTexture(Screen.width, Screen.height, 16);
+                bgCamera.targetTexture = bgTargetTexture;
+            }
         }
 
         protected void OnDisable()
         {
-           
+
         }
 
         protected void Start()
@@ -49,22 +50,22 @@ namespace Water2D
 
         }
 
-     
+
 
 
         // Called by the camera to apply the image effect
-		RenderTexture buffer;
-		
+        RenderTexture buffer;
+
         void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-			//if(!Application.isPlaying)
-			//	return;
+            //if(!Application.isPlaying)
+            //	return;
 
             int rtW = source.width / 4;
             int rtH = source.height / 4;
             buffer = RenderTexture.GetTemporary(rtW, rtH, 0);
-			
-     
+
+
             Graphics.Blit(bgTargetTexture, destination); // background
             Graphics.Blit(source, destination, cutOutMaterial); // water
             RenderTexture.ReleaseTemporary(buffer);

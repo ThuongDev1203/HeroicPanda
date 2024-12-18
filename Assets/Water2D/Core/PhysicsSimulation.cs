@@ -16,8 +16,9 @@ namespace Water2D
             if (instance == null)
             {
                 GameObject go = GameObject.Find("physim_Water2d");
-                if(go == null) {
-                    PhysicsSimulation []aux = FindObjectsOfType<PhysicsSimulation>();
+                if (go == null)
+                {
+                    PhysicsSimulation[] aux = FindObjectsOfType<PhysicsSimulation>();
                     for (int i = 0; i < aux.Length; i++)
                     {
                         DestroyImmediate(aux[i].gameObject);
@@ -37,17 +38,18 @@ namespace Water2D
                         instance = go.GetComponent<PhysicsSimulation>();
                 }
             }
-            else {
+            else
+            {
                 instance.Simulate = true;
             }
-               
+
         }
 
-        
-       
+
+
         private void Awake()
         {
-           
+
 
         }
 
@@ -67,7 +69,7 @@ namespace Water2D
                 Stop();
                 return;
             }
-                
+
 
 
             if (instance == null)
@@ -94,7 +96,7 @@ namespace Water2D
 
         public static PhysicsSimulation instance;
 
-      
+
 
         public bool Simulate = false;
         bool _LastSimulateState = false;
@@ -102,7 +104,7 @@ namespace Water2D
         PhysicsScene2D CurrentPhysicsScene;
         float timer1 = 0;
 
-        [HideInInspector]public List<Rigidbody2D> RBAltered;
+        [HideInInspector] public List<Rigidbody2D> RBAltered;
 
         private void OnRun()
         {
@@ -124,7 +126,7 @@ namespace Water2D
         private void OnStop()
         {
 
-           
+
             Simulate = false;
             EditorApplication.update -= UpdatePhysics;
             BackToNormalRB2D();
@@ -133,10 +135,10 @@ namespace Water2D
             Physics2D.autoSimulation = true;
         }
 
-       [HideInInspector]public bool alreadyCreated = false;
+        [HideInInspector] public bool alreadyCreated = false;
         void Create()
         {
-            
+
             Scene scene = EditorSceneManager.GetActiveScene();//EditorSceneManager.CreateScene("MyScene1", csp);
             CurrentPhysicsScene = scene.GetPhysicsScene2D();
 
@@ -150,8 +152,8 @@ namespace Water2D
         void ExcludeRB2D()
         {
 
-           // if (RBAltered == null)
-             //   RBAltered = new List<Rigidbody2D>(10);
+            // if (RBAltered == null)
+            //   RBAltered = new List<Rigidbody2D>(10);
 
             Rigidbody2D[] rb = FindObjectsOfType<Rigidbody2D>();
             for (int i = 0; i < rb.Length; i++)
@@ -223,7 +225,6 @@ namespace Water2D
 
             if (Simulate)
             {
-               
                 timer1 += Time.deltaTime;
 
 
@@ -232,7 +233,7 @@ namespace Water2D
                     while (timer1 >= Time.fixedDeltaTime)
                     {
                         timer1 -= Time.fixedDeltaTime;
-                        if(!Physics2D.autoSimulation)
+                        if (!Physics2D.autoSimulation)
                             CurrentPhysicsScene.Simulate(Time.fixedDeltaTime);
                     }
                 }

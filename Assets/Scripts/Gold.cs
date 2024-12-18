@@ -32,14 +32,14 @@ public class Gold : MonoBehaviour
             , Vector2.down, 1.0f, LayerMask.GetMask("Static"));
         else
             _hitGround = Physics2D.Raycast(
-               new Vector3(transform.position.x,
-               transform.position.y,
-               transform.position.z)
-           , Vector2.down, 1.0f, LayerMask.GetMask("Static"));
+            new Vector3(transform.position.x,
+            transform.position.y,
+            transform.position.z)
+        , Vector2.down, 1.0f, LayerMask.GetMask("Static"));
         if (_hitGround.collider != null)
         {
-             if(_hitGround.collider.tag == "Ground")
-            isGround = true;
+            if (_hitGround.collider.tag == "Ground")
+                isGround = true;
             //Debug.Log("COIN HIT " + _hitGround.collider.name);
         }
     }
