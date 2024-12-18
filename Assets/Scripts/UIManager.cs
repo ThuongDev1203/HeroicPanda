@@ -1,20 +1,20 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using static AdsControl;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject gameUIPanel, loadingPanel, resultPanel,failResultPanel,replayBtn,skipBtn,doubleCoinBtn;
+    public GameObject gameUIPanel, loadingPanel, resultPanel, failResultPanel, replayBtn, skipBtn, doubleCoinBtn;
 
     public SpriteRenderer loadingMask;
 
     public static UIManager _instance;
 
-    public Text levelTextInGame,levelTextInResult,coinGamePlayText,coinGameOverText,coinBonusText;
+    public Text levelTextInGame, levelTextInResult, coinGamePlayText, coinGameOverText, coinBonusText;
 
     public Image[] iconLst = new Image[5];
 
@@ -26,13 +26,13 @@ public class UIManager : MonoBehaviour
 
     public Image[] doneResultLst = new Image[5];
 
-    public GameObject frontLife1, frontLife2, frontLife3, frontLifeInGame1,frontLifeInGame2,frontLifeInGame3;
+    public GameObject frontLife1, frontLife2, frontLife3, frontLifeInGame1, frontLifeInGame2, frontLifeInGame3;
 
     private void Awake()
     {
         _instance = this;
         StartCoroutine(Fading());
-       
+
     }
 
     // Start is called before the first frame update
@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void ShowLevelPanel()
@@ -53,21 +53,21 @@ public class UIManager : MonoBehaviour
     }
     public void HideLevelPanel()
     {
-       // levelSelector.GetComponent<Animator>().SetTrigger("Close");
+        // levelSelector.GetComponent<Animator>().SetTrigger("Close");
     }
 
     public void LoadLevel(int _level)
     {
         PlayerPrefs.SetInt("CurrentLevel", _level);
         HideLevelPanel();
-       // homePanel.SetActive(false);
+        // homePanel.SetActive(false);
         StartCoroutine(Fading());
 
     }
 
     IEnumerator Fading()
     {
-     
+
         loadingPanel.SetActive(true);
         levelTextInGame.text = "LEVEL " + PlayerPrefs.GetInt("CurrentLevel");
         //yield return new WaitForSeconds(0.2f);
@@ -135,8 +135,8 @@ public class UIManager : MonoBehaviour
         Camera.main.transform.localPosition = Vector3.zero;
         Camera.main.orthographicSize = 5.0f;
         */
-        Application.LoadLevel("MainHome");
-    }    
+        SceneManager.LoadScene("MainHome");
+    }
 
     public void ReplayGame()
     {
@@ -149,7 +149,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.ResetPara();
         StartCoroutine(FadingReplay());
         */
-        Application.LoadLevel("MainGame");
+        SceneManager.LoadScene("MainGame");
     }
 
 
@@ -163,7 +163,7 @@ public class UIManager : MonoBehaviour
 
         if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN)
             GameManager.instance.bonusCoin += 30;
-        else if(LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.BIG_COIN)
+        else if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.BIG_COIN)
             GameManager.instance.bonusCoin += 60;
         else if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.PRINCESS)
             GameManager.instance.bonusCoin += 80;
@@ -179,25 +179,25 @@ public class UIManager : MonoBehaviour
         //GameObject _hero = GameObject.FindGameObjectWithTag("Hero");
         int currentLevel = PlayerPrefs.GetInt("CurrentLevel");
         int lockLevel = PlayerPrefs.GetInt("LockLevel");
-        if(currentLevel == lockLevel)
+        if (currentLevel == lockLevel)
         {
             lockLevel++;
             PlayerPrefs.SetInt("LockLevel", lockLevel);
         }
         SetIconResultInLevel();
-        doneResultLst[(currentLevel -1) % 5].gameObject.SetActive(true);
+        doneResultLst[(currentLevel - 1) % 5].gameObject.SetActive(true);
         levelTextInResult.text = "LEVEL " + currentLevel.ToString();
         GameObject _hero = GameObject.FindGameObjectWithTag("Hero");
         Camera.main.transform.localPosition = new Vector3(_hero.transform.localPosition.x,
         _hero.transform.localPosition.y, Camera.main.transform.position.z);
         Camera.main.orthographicSize = 3.0f;
-       // AdsControl.Instance.showAds();
+        // AdsControl.Instance.showAds();
         if (PlayerPrefs.GetInt("Bonus" + PlayerPrefs.GetInt("CurrentLevel")) == 1)
         {
             doubleCoinBtn.SetActive(false);
         }
     }
-    
+
     public void RemoveAds()
     {
         Purchase.Instance.BuyNonConsumable();
@@ -219,7 +219,7 @@ public class UIManager : MonoBehaviour
     {
         int currentLevel = PlayerPrefs.GetInt("CurrentLevel");
         PlayerPrefs.SetInt("CurrentLevel", currentLevel + 1);
-        Application.LoadLevel("MainGame");
+        SceneManager.LoadScene("MainGame");
     }
 
 
@@ -230,16 +230,16 @@ public class UIManager : MonoBehaviour
 
     IEnumerator ShowGameOverIE()
     {
-      //  gameUIPanel.SetActive(false);
+        //  gameUIPanel.SetActive(false);
         yield return new WaitForSeconds(2.0f);
         ShowCoinText(coinGameOverText, GameManager.instance.currentCoin);
         UpdateLife(GameManager.instance._life);
 
-        if(GameManager.instance._life == 0)
+        if (GameManager.instance._life == 0)
         {
             replayBtn.SetActive(false);
             skipBtn.SetActive(false);
-        }    
+        }
 
         PlayerPrefs.SetInt("Coin", GameManager.instance.currentCoin);
         PlayerPrefs.SetInt("Life", GameManager.instance._life);
@@ -265,11 +265,11 @@ public class UIManager : MonoBehaviour
             replayBtn.SetActive(true);
             skipBtn.SetActive(true);
         }
-    }    
+    }
 
     void SetIconFromLevelType(LevelManager.LEVEL_TYPE _type, Image _coin)
     {
-        switch(_type)
+        switch (_type)
         {
             case LevelManager.LEVEL_TYPE.COIN:
                 _coin.sprite = spriteLst[0];
@@ -284,7 +284,7 @@ public class UIManager : MonoBehaviour
                 _coin.sprite = spriteLst[3];
                 break;
         }
-    }    
+    }
 
     void SetIconInLevel()
     {
@@ -292,30 +292,30 @@ public class UIManager : MonoBehaviour
         int _index = Mathf.CeilToInt(currentLevel / 5);
         if (currentLevel % 5 == 0)
             _index = currentLevel / 5 - 1;
-       // Debug.Log("INDEX " + _index);
+        // Debug.Log("INDEX " + _index);
         SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5], iconLst[0]);
         SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5 + 1], iconLst[1]);
         SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5 + 2], iconLst[2]);
-        SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5 + 3] , iconLst[3]);
+        SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5 + 3], iconLst[3]);
         SetIconFromLevelType(LevelManager._instance.levelTypeLst[_index * 5 + 4], iconLst[4]);
 
-        int _offset = (currentLevel -1 ) % 5;
+        int _offset = (currentLevel - 1) % 5;
 
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (i < _offset)
                 doneLst[i].gameObject.SetActive(true);
-            else if(i == _offset)
+            else if (i == _offset)
             {
                 doneLst[i].gameObject.SetActive(false);
                 iconLst[i].color = new Color(1, 1, 1, 1);
-            }   
+            }
             else
             {
                 doneLst[i].gameObject.SetActive(false);
                 iconLst[i].color = new Color(0.25f, 0.25f, 0.25f, 1.0f);
-            }    
-        }    
+            }
+        }
     }
 
     public void ShowCoinText(Text _coinText, int coin)
@@ -326,10 +326,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLife(int life)
     {
-       switch(life)
+        switch (life)
         {
             case 0:
-               
+
                 frontLife1.SetActive(false);
                 frontLife2.SetActive(false);
                 frontLife3.SetActive(false);
@@ -375,7 +375,7 @@ public class UIManager : MonoBehaviour
                 frontLifeInGame3.SetActive(true);
 
                 break;
-        }    
+        }
     }
 
     void SetIconResultInLevel()
@@ -449,7 +449,7 @@ public class UIManager : MonoBehaviour
             PlayerPrefs.SetInt("LockLevel", lockLevel);
         }
         PlayerPrefs.SetInt("CurrentLevel", currentLevel + 1);
-        Application.LoadLevel("MainGame");
+        SceneManager.LoadScene("MainGame");
     }
 
     public void ShowRWUnityAds()
@@ -468,7 +468,7 @@ public class UIManager : MonoBehaviour
                     PlayerPrefs.SetInt("LockLevel", lockLevel);
                 }
                 PlayerPrefs.SetInt("CurrentLevel", currentLevel + 1);
-                Application.LoadLevel("MainGame");
+                SceneManager.LoadScene("MainGame");
             }
 
             if (ID.Equals(AdsControl.Instance.adUnityRWUnitId) && callBackState.Equals(UnityAdsShowCompletionState.COMPLETED))

@@ -15,19 +15,19 @@ public class Level : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-         isLoadedHero = false;
+        isLoadedHero = false;
     }
     // Start is called before the first frame update
     void Start()
     {
 
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isLoadedHero && _hero == null)
+        if (!isLoadedHero && _hero == null)
         {
             _hero = GameObject.FindGameObjectWithTag("Hero").GetComponent<Hero>();
             isLoadedHero = true;

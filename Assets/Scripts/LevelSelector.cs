@@ -7,33 +7,22 @@ public class LevelSelector : MonoBehaviour
 {
     public Transform[] levelItemLst = new Transform[20];
     [HideInInspector]
-    public int currentPage = 0,totalPage;
+    public int currentPage = 0, totalPage;
 
     public Text pageText;
 
-    public Sprite unlockLevel,lockLevel;
+    public Sprite unlockLevel, lockLevel;
+
     private void Awake()
     {
-       currentPage = (int)(PlayerPrefs.GetInt("LockLevel")/ 20);
+        currentPage = PlayerPrefs.GetInt("LockLevel", 1) / 20;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-       // Debug.Log("Item total " + GetChildByName("Holder").transform.childCount);
         for (int i = 0; i < GetChildByName("Holder").transform.childCount; i++)
             levelItemLst[i] = GetChildByName("Holder").transform.GetChild(i);
         ShowLevelItemInfo();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void LoadItem()
-    {
-        
     }
 
     GameObject GetChildByName(string _name)
@@ -48,40 +37,58 @@ public class LevelSelector : MonoBehaviour
             {
                 if (t.gameObject.name == _name)
                     _child = t.gameObject;
-
             }
         }
 
         return _child;
-       
     }
 
     public void ShowLevelItemInfo()
     {
         pageText.text = "PAGE " + (currentPage + 1).ToString();
-        int _lockLevel = PlayerPrefs.GetInt("LockLevel");
-        for(int i = 0; i < levelItemLst.Length; i++)
-        {
-            levelItemLst[i].Find("LevelText").GetComponent<Text>().text = (i + 1 + levelItemLst.Length * currentPage).ToString() + "";
-            if (i + 1 + levelItemLst.Length * currentPage <= _lockLevel)
-                levelItemLst[i].Find("Panel").GetComponent<Image>().sprite = unlockLevel;
-            else
-                levelItemLst[i].Find("Panel").GetComponent<Image>().sprite = lockLevel;
-            //levelItemLst[i].GetComponent<Button>().onClick.AddListener(() => LoadLevel(i));
-            /*
-            levelItemLst[i].GetComponent<Button>().onClick.AddListener(() => {
+        int _lockLevel = PlayerPrefs.GetInt("LockLevel", 1);
 
-                UIManager._instance.LoadLevel((i));
+        for (int i = 0; i < levelItemLst.Length; i++)
+        {
+            int levelNumber = i + 1 + levelItemLst.Length * currentPage;
+
+            // Ẩn số màn chơi nếu màn bị khóa
+            Text levelText = levelItemLst[i].Find("LevelText").GetComponent<Text>();
+            levelText.text = "";
             
-            });
-            */
+            if (levelNumber <= _lockLevel)
+            {
+                levelText.text = levelNumber.ToString();
+                levelItemLst[i].Find("Panel").GetComponent<Image>().sprite = unlockLevel;
+            }
+            else
+            {
+                levelItemLst[i].Find("Panel").GetComponent<Image>().sprite = lockLevel;
+            }
+
+            // Xóa các listener trước khi thêm để tránh bị trùng lặp
+            Button levelButton = levelItemLst[i].GetComponent<Button>();
+            levelButton.onClick.RemoveAllListeners();
+
+            if (levelNumber <= _lockLevel)
+            {
+                levelButton.onClick.AddListener(() => LoadLevel(levelNumber));
+                levelButton.interactable = true;
+            }
+            else
+            {
+                levelButton.interactable = false;
+            }
         }
     }
 
     public void LoadLevel(int _level)
     {
-        if(_level <= PlayerPrefs.GetInt("LockLevel"))
-         HomeManager._instance.LoadLevel(_level + levelItemLst.Length * currentPage);
+        if (_level <= PlayerPrefs.GetInt("LockLevel", 1))
+        {
+            // Chuyển tới màn chơi tương ứng
+            HomeManager._instance.LoadLevel(_level);
+        }
     }
 
     public void NextPage()
@@ -91,7 +98,6 @@ public class LevelSelector : MonoBehaviour
             currentPage++;
             ShowLevelItemInfo();
         }
-           
     }
 
     public void PrePage()
@@ -101,6 +107,6 @@ public class LevelSelector : MonoBehaviour
             currentPage--;
             ShowLevelItemInfo();
         }
-           
     }
 }
+
