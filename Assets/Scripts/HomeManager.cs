@@ -3,37 +3,38 @@ using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static AdsControl;
 
 public class HomeManager : MonoBehaviour
 {
-    public GameObject levelSelector, homePanel, loadingPanel,settingPanel,outLifePanel, moreCoinPanel, frontLife1,frontLife2,frontLife3;
+    public GameObject levelSelector, homePanel, loadingPanel, settingPanel, outLifePanel, moreCoinPanel, frontLife1, frontLife2, frontLife3;
 
-    public Image loadingMask, musicImg,soundImg,virImg;
+    public Image loadingMask, musicImg, soundImg, virImg;
 
     public Sprite onBtn, offBtn;
 
     public static HomeManager _instance;
 
-    public Text coinText,lockLevelText;
+    public Text coinText, lockLevelText;
 
     private void Awake()
     {
         _instance = this;
 
-        if(PlayerPrefs.GetInt("StartGame") == 0)
+        if (PlayerPrefs.GetInt("StartGame") == 0)
         {
             PlayerPrefs.SetInt("StartGame", 1);
             PlayerPrefs.SetInt("Coin", 200);
-            PlayerPrefs.SetInt("Life",3);
+            PlayerPrefs.SetInt("Life", 3);
             PlayerPrefs.SetInt("Sound", 1);
             PlayerPrefs.SetInt("Music", 1);
             PlayerPrefs.SetInt("Vir", 1);
             PlayerPrefs.SetInt("LockLevel", 1);
         }
 
-       
+
     }
 
     // Start is called before the first frame update
@@ -73,8 +74,8 @@ public class HomeManager : MonoBehaviour
         outLifePanel.SetActive(true);
         int _life = PlayerPrefs.GetInt("Life");
         UpdateLive(_life);
-    }   
-    
+    }
+
     public void HideOutOfLife()
     {
         outLifePanel.GetComponent<Animator>().SetTrigger("Close");
@@ -109,7 +110,7 @@ public class HomeManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         loadingPanel.SetActive(true);
-        Application.LoadLevel("MainGame");
+        SceneManager.LoadScene("MainGame");
 
         //yield return new WaitForSeconds(0.2f);
         for (float i = 1; i >= 0; i -= Time.deltaTime * 0.35f)
@@ -125,7 +126,7 @@ public class HomeManager : MonoBehaviour
     {
         //yield return new WaitForSeconds(5.0f);
         loadingPanel.SetActive(true);
-        Application.LoadLevel("MainGame");
+        SceneManager.LoadScene("MainGame");
 
         //yield return new WaitForSeconds(0.2f);
         for (float i = 1; i >= 0; i -= Time.deltaTime * 0.35f)
@@ -166,7 +167,7 @@ public class HomeManager : MonoBehaviour
     void UpdateCoinText()
     {
         coinText.text = PlayerPrefs.GetInt("Coin") + "";
-    }    
+    }
 
     public void MoreLive()
     {
@@ -192,50 +193,50 @@ public class HomeManager : MonoBehaviour
 
     public void UpdateLive(int life)
     {
-        switch(life)
+        switch (life)
         {
 
-        case 0: 
-        frontLife1.SetActive(false);
-        frontLife2.SetActive(false);
-        frontLife3.SetActive(false);
+            case 0:
+                frontLife1.SetActive(false);
+                frontLife2.SetActive(false);
+                frontLife3.SetActive(false);
 
-        break;
+                break;
 
-         case 1:
-        frontLife1.SetActive(true);
-        frontLife2.SetActive(false);
-        frontLife3.SetActive(false);
-
-
-
-        break;
-        case 2:
-         frontLife1.SetActive(true);
-        frontLife2.SetActive(true);
-        frontLife3.SetActive(false);
+            case 1:
+                frontLife1.SetActive(true);
+                frontLife2.SetActive(false);
+                frontLife3.SetActive(false);
 
 
 
-        break;
-        case 3:
-        frontLife1.SetActive(true);
-        frontLife2.SetActive(true);
-        frontLife3.SetActive(true);
+                break;
+            case 2:
+                frontLife1.SetActive(true);
+                frontLife2.SetActive(true);
+                frontLife3.SetActive(false);
 
 
 
-        break;
-    }
-            
-            
+                break;
+            case 3:
+                frontLife1.SetActive(true);
+                frontLife2.SetActive(true);
+                frontLife3.SetActive(true);
+
+
+
+                break;
+        }
+
+
     }
 
     public void ToggleMusic()
     {
         int _music = PlayerPrefs.GetInt("Music");
 
-        if(_music == 1)
+        if (_music == 1)
         {
             PlayerPrefs.SetInt("Music", 0);
         }
@@ -251,7 +252,7 @@ public class HomeManager : MonoBehaviour
     {
         int _sound = PlayerPrefs.GetInt("Sound");
 
-        if(_sound == 1)
+        if (_sound == 1)
         {
             PlayerPrefs.SetInt("Sound", 0);
         }
@@ -266,7 +267,7 @@ public class HomeManager : MonoBehaviour
     {
         int _vir = PlayerPrefs.GetInt("Vir");
 
-        if(_vir == 1)
+        if (_vir == 1)
         {
             PlayerPrefs.SetInt("Vir", 0);
         }
@@ -297,7 +298,7 @@ public class HomeManager : MonoBehaviour
             musicImg.sprite = offBtn;
         }
 
-        if(_sound == 1)
+        if (_sound == 1)
         {
             SoundManager.Instance.EffectsSource.mute = false;
             soundImg.sprite = onBtn;
@@ -315,7 +316,7 @@ public class HomeManager : MonoBehaviour
         }
         else
         {
-           // SoundManager.Instance.EffectsSource.mute = true;
+            // SoundManager.Instance.EffectsSource.mute = true;
             virImg.sprite = offBtn;
         }
     }

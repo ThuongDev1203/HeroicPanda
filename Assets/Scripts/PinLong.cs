@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PinLong : MonoBehaviour
 {
-   
+
 	public const float MAX_SWIPE_TIME = 0.5f;
 
 	// Factor of the screen width that we consider a swipe
@@ -16,7 +16,7 @@ public class PinLong : MonoBehaviour
 	public static bool swipedUp = false;
 	public static bool swipedDown = false;
 
-	public Transform _to, _from,_edge;
+	public Transform _to, _from, _edge;
 
 	public float speed = 10.0f;
 
@@ -28,7 +28,7 @@ public class PinLong : MonoBehaviour
 	int current = 0;
 	float WPradius = 1;
 
-	RaycastHit2D hit,_hitEdge;
+	RaycastHit2D hit, _hitEdge;
 	bool isCheckHitEdge;
 
 	bool isShake = false, isMoving = false;
@@ -125,7 +125,7 @@ public class PinLong : MonoBehaviour
 			Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
 			hit = Physics2D.Raycast(mousePos2D, Vector2.zero, 1.0f, LayerMask.GetMask("Drag"));
-			
+
 
 			startPos = new Vector2(Input.mousePosition.x / (float)Screen.width, Input.mousePosition.y / (float)Screen.width);
 			startTime = Time.time;
@@ -133,47 +133,47 @@ public class PinLong : MonoBehaviour
 		}
 		if (Input.GetMouseButtonUp(0))
 		{
-			
 
-				if (Time.time - startTime > MAX_SWIPE_TIME) // press too long
-					return;
 
-				Vector2 endPos = new Vector2(Input.mousePosition.x / (float)Screen.width, Input.mousePosition.y / (float)Screen.width);
+			if (Time.time - startTime > MAX_SWIPE_TIME) // press too long
+				return;
 
-				Vector2 swipe = new Vector2(endPos.x - startPos.x, endPos.y - startPos.y);
+			Vector2 endPos = new Vector2(Input.mousePosition.x / (float)Screen.width, Input.mousePosition.y / (float)Screen.width);
 
-				if (swipe.magnitude < MIN_SWIPE_DISTANCE) // Too short swipe
-					return;
+			Vector2 swipe = new Vector2(endPos.x - startPos.x, endPos.y - startPos.y);
 
-				if (Mathf.Abs(swipe.x) > Mathf.Abs(swipe.y))
-				{ // Horizontal swipe
-					if (swipe.x > 0)
-					{
-						swipedRight = true;
-						//Debug.Log("Swipe Right");
-					}
-					else
-					{
-						swipedLeft = true;
-						//Debug.Log("Swipe Left");
-					}
+			if (swipe.magnitude < MIN_SWIPE_DISTANCE) // Too short swipe
+				return;
+
+			if (Mathf.Abs(swipe.x) > Mathf.Abs(swipe.y))
+			{ // Horizontal swipe
+				if (swipe.x > 0)
+				{
+					swipedRight = true;
+					//Debug.Log("Swipe Right");
 				}
 				else
-				{ // Vertical swipe
-					if (swipe.y > 0)
-					{
-						swipedUp = true;
-						//Debug.Log("Swipe Up");
-					}
-					else
-					{
-						swipedDown = true;
-						//Debug.Log("Swipe Down");
-					}
+				{
+					swipedLeft = true;
+					//Debug.Log("Swipe Left");
 				}
-			
+			}
+			else
+			{ // Vertical swipe
+				if (swipe.y > 0)
+				{
+					swipedUp = true;
+					//Debug.Log("Swipe Up");
+				}
+				else
+				{
+					swipedDown = true;
+					//Debug.Log("Swipe Down");
+				}
+			}
 
-			
+
+
 		}
 		if (hit.collider == null)
 			return;
@@ -182,60 +182,60 @@ public class PinLong : MonoBehaviour
 		if (Input.GetMouseButtonUp(0))
 			SoundManager.Instance.Play(SoundManager.Instance._pin);
 		if (!isMoving)
-		_hitEdge = Physics2D.Raycast(_edge.position, _to.position - _edge.position, 0.2f, LayerMask.GetMask("Drag"));
-			
-		
+			_hitEdge = Physics2D.Raycast(_edge.position, _to.position - _edge.position, 0.2f, LayerMask.GetMask("Drag"));
+
+
 		if (_hitEdge)
 		{
 			Debug.Log("HIT EDGE " + _hitEdge.collider.name);
-			
-		}	
-		
-		
-			if (((_from.position - _to.position).normalized.x > 0) && swipedLeft && hit.collider.name == gameObject.name && !_hitEdge)
+
+		}
+
+
+		if (((_from.position - _to.position).normalized.x > 0) && swipedLeft && hit.collider.name == gameObject.name && !_hitEdge)
 		{
 			isMoving = true;
 			MoveOject();
-		}	
+		}
 
-	     	else if (((_from.position - _to.position).normalized.x > 0) && swipedRight && hit.collider.name == gameObject.name && !_hitEdge)
+		else if (((_from.position - _to.position).normalized.x > 0) && swipedRight && hit.collider.name == gameObject.name && !_hitEdge)
 			StartCoroutine(Shake(this.transform));
-	     	else if (_hitEdge && !isShake &&swipedLeft)
-			 StartCoroutine(Shake(this.transform));
+		else if (_hitEdge && !isShake && swipedLeft)
+			StartCoroutine(Shake(this.transform));
 
-		   if (((_from.position - _to.position).normalized.x < 0) && swipedRight && hit.collider.name == gameObject.name && !_hitEdge)
+		if (((_from.position - _to.position).normalized.x < 0) && swipedRight && hit.collider.name == gameObject.name && !_hitEdge)
 		{
 			isMoving = true;
 			MoveOject();
-		}		
-		   else
-		   if (((_from.position - _to.position).normalized.x < 0) && swipedLeft && hit.collider.name == gameObject.name && !_hitEdge)
+		}
+		else
+		if (((_from.position - _to.position).normalized.x < 0) && swipedLeft && hit.collider.name == gameObject.name && !_hitEdge)
 			StartCoroutine(Shake(this.transform));
 		else if (_hitEdge && !isShake && swipedRight)
-			 StartCoroutine(Shake(this.transform));
+			StartCoroutine(Shake(this.transform));
 
 		if (((_from.position - _to.position).normalized.y < 0) && swipedUp && hit.collider.name == gameObject.name && !_hitEdge)
 		{
 			isMoving = true;
 			MoveOject();
-		}		
+		}
 		else if (((_from.position - _to.position).normalized.y < 0) && swipedDown && hit.collider.name == gameObject.name && !_hitEdge)
 			StartCoroutine(Shake(this.transform));
 		else if (_hitEdge && !isShake && swipedUp)
-			 StartCoroutine(Shake(this.transform));
+			StartCoroutine(Shake(this.transform));
 
 
-		
+
 		if (((_from.position - _to.position).normalized.y > 0) && swipedDown && hit.collider.name == gameObject.name && !_hitEdge)
 		{
 			isMoving = true;
 			MoveOject();
-		}	
-			
+		}
+
 		else if (((_from.position - _to.position).normalized.y > 0) && swipedUp && hit.collider.name == gameObject.name && !_hitEdge)
 			StartCoroutine(Shake(this.transform));
 		else if (_hitEdge && !isShake && swipedDown)
-			 StartCoroutine(Shake(this.transform));
+			StartCoroutine(Shake(this.transform));
 
 	}
 
@@ -254,12 +254,12 @@ public class PinLong : MonoBehaviour
 				swipedRight = false;
 			}
 		}
-		transform.position = Vector3.MoveTowards(transform.position , waypoints[current], Time.deltaTime * speed);
+		transform.position = Vector3.MoveTowards(transform.position, waypoints[current], Time.deltaTime * speed);
 	}
 
 	IEnumerator Shake(Transform thisTransform)
 	{
-		
+
 		Vector2 nr = (_to.position - _from.position).normalized;
 
 		float angle = Mathf.Atan(nr.y / nr.x);
@@ -268,7 +268,7 @@ public class PinLong : MonoBehaviour
 			transform.position.y + Mathf.Sign(nr.y) * Mathf.Sin(Mathf.Abs(angle)) * 10.0f, transform.position.z);
 			*/
 
-	   isShake = true;
+		isShake = true;
 		Vector3 startPos = thisTransform.position;
 		Vector3 endPos = Vector3.zero;
 		/*
@@ -281,8 +281,8 @@ public class PinLong : MonoBehaviour
 		if (swipedDown)
 			endPos = new Vector3(startPos.x, startPos.y - 0.18f, startPos.z);
 			*/
-			endPos = new Vector3(transform.position.x - Mathf.Sign(nr.x) * Mathf.Cos(Mathf.Abs(angle)) * 0.18f,
-			transform.position.y - Mathf.Sign(nr.y) * Mathf.Sin(Mathf.Abs(angle)) * 0.18f, transform.position.z);
+		endPos = new Vector3(transform.position.x - Mathf.Sign(nr.x) * Mathf.Cos(Mathf.Abs(angle)) * 0.18f,
+		transform.position.y - Mathf.Sign(nr.y) * Mathf.Sin(Mathf.Abs(angle)) * 0.18f, transform.position.z);
 		/*
 		if (swipedLeft)
 			endPos = new Vector3(startPos.x - 0.18f, startPos.y,startPos.z);
@@ -317,5 +317,5 @@ public class PinLong : MonoBehaviour
 	}
 
 
-	
+
 }

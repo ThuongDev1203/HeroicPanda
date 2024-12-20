@@ -85,8 +85,10 @@ public class Hero : MonoBehaviour
 	void SeekTarget()
 	{
 
-		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		if (GameManager.instance == null || GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		{
 			return;
+		}
 
 		if (_target != null)
 		{
@@ -269,22 +271,32 @@ public class Hero : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		if (GameManager.instance == null || GameManager.instance.isGameOver || GameManager.instance.isGameWin)
 		{
 			return;
 		}
-		if (_isWin)
+
+		if (_isWin || isDied || state == PlayerState.Attack)
 		{
 			return;
 		}
-		if (isDied)
-		{
-			return;
-		}
-		if (state == PlayerState.Attack)
-		{
-			return;
-		}
+
+		/*
+				if (_isWin)
+				{
+					return;
+				}
+
+				if (isDied)
+				{
+					return;
+				}
+
+				if (state == PlayerState.Attack)
+				{
+					return;
+				}
+		*/
 		_hitWall = Physics2D.Raycast(new Vector3(transform.position.x - 0.3f * transform.localScale.x,
 				transform.position.y + 0.5f, transform.position.z)
 			   , -Vector2.right * transform.localScale.x, 0.1f,
@@ -310,12 +322,13 @@ public class Hero : MonoBehaviour
 			this.transform.localScale = new Vector3(-1, 1, 1);
 
 		//ebug.Log("x  " + moveHorizontal);
-
+		SwitchState(moveHorizontal != 0 ? PlayerState.Move : PlayerState.Idle);
+		/*
 		if (moveHorizontal != 0)
 			SwitchState(PlayerState.Move);
 		else
 			SwitchState(PlayerState.Idle);
-
+		*/
 		_rigidbody.AddForce(movement * speed);
 	}
 

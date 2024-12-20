@@ -1,37 +1,40 @@
-﻿namespace Water2D {
-	using UnityEngine;
+﻿namespace Water2D
+{
+    using UnityEngine;
     using UnityEngine.Events;
-   	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine.UI;
-	//using Apptouch;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine.UI;
+    //using Apptouch;
 
 #if UNITY_EDITOR
     using UnityEditor;
 #endif
 
 
-    public struct microSpawn{
-		public Vector3 pos;
-		public int amount;
-		public Vector2 initVel;
+    public struct microSpawn
+    {
+        public Vector3 pos;
+        public int amount;
+        public Vector2 initVel;
 
-		public microSpawn(Vector3 pos, int amount, Vector2 initVel)
-		{
-			this.pos = pos;
-			this.amount = amount;
-			this.initVel = initVel;
-		}
-	}
+        public microSpawn(Vector3 pos, int amount, Vector2 initVel)
+        {
+            this.pos = pos;
+            this.amount = amount;
+            this.initVel = initVel;
+        }
+    }
 
-   
+
 
     [ExecuteInEditMode]
     [SelectionBase]
     public class Water2D_Spawner : MonoBehaviour
     {
 
-        public enum EmissionType {
+        public enum EmissionType
+        {
             ParticleSystem,
             FillerCollider
         }
@@ -93,7 +96,7 @@
         /// </summary>
         public string ParticlesTag = "Metaball_liquid";
 
-        
+
         /// <summary>
         /// This means that the spawner won't be update in every change of state and you can generate the amount of fluid in Editor for use in Play mode later.
         /// When this property is off, the spawner will be refresh at the end of the application runtime.
@@ -220,7 +223,7 @@
         /// <summary>
         /// The color of the glow
         /// </summary>
-        public Color GlowColor = new Color(1f,1f,1f,.4f);
+        public Color GlowColor = new Color(1f, 1f, 1f, .4f);
 
         /// <summary>
         /// the spread size of the glow
@@ -233,7 +236,7 @@
         public int GlowSortingOrder = -1;
 
         [SerializeField] bool _lastGlowEnabledValue = false;
-       
+
 
         //[Header("Speed & direction")]
         /// <summary>
@@ -371,7 +374,8 @@
                 yield return new WaitForEndOfFrame();
                 Spawn();
             }
-            else {
+            else
+            {
                 yield return new WaitForEndOfFrame();
                 StartCoroutine(UpdateQuietParticleProperties());
             }
@@ -383,36 +387,36 @@
         }
 
         static void RunSpawner()
-		{
+        {
             instance.Spawn();
 
         }
-       
+
         static void StopSpawner()
         {
             instance.Restore();
 
         }
 
-      
-       
 
 
 
-		public int AllBallsCount{ get; private set;}
-		public bool IsSpawning{ get; private set;}
+
+
+        public int AllBallsCount { get; private set; }
+        public bool IsSpawning { get; private set; }
 
         public bool isRefractingMaterial = false;
 
         int usableDropsCount;
-		int DefaultCount;
+        int DefaultCount;
 
 
-		bool _breakLoop = false;
+        bool _breakLoop = false;
 
-		GameObject _parent;
+        GameObject _parent;
         string _parentNameID = "Water2DParticlesID_";
-       
+
 
 
         public void SetupParticles()
@@ -422,8 +426,9 @@
                 if (WaterDropsObjects.Length > 0 && WaterDropsObjects[0] != null)
                     _parent = WaterDropsObjects[0].transform.parent.gameObject;
             }
-            if(_parent != null){
-               
+            if (_parent != null)
+            {
+
                 DestroyImmediate(_parent);
 
             }
@@ -432,10 +437,10 @@
 
             WaterDropsObjects = new GameObject[DropCount];
 
-            
 
-                
-           
+
+
+
 
 
 
@@ -455,7 +460,7 @@
                 // Create glow
                 if (GlowEffect)
                 {
-                   
+
                     GameObject o = new GameObject("_glow");
                     o.transform.SetParent(WaterDropsObjects[i].transform);
                     o.transform.localPosition = new Vector3(0, 0, -1f);
@@ -466,31 +471,32 @@
                     o.transform.localScale = Vector3.one * GlowSize;
 
                 }
-                else {
+                else
+                {
                     Transform t = WaterDropsObjects[i].transform.Find("_glow");
                     if (t != null)
                         DestroyImmediate(t);
                 }
-                
+
 
                 //Set tex color for scheme selection
                 Color ColorTex = Color.white;
 
                 if (ColorScheme == 1)
-                    ColorTex = new Color(1f,0f,0f);
+                    ColorTex = new Color(1f, 0f, 0f);
                 if (ColorScheme == 2)
                     ColorTex = new Color(0f, 1f, 0f);
                 if (ColorScheme == 3)
                     ColorTex = new Color(0f, 0f, 1f);
-               /* if (ColorScheme == 4)
-                    ColorTex = new Color(1f, 1f, 0f);
-                if (ColorScheme == 5)
-                    ColorTex = new Color(0f, 1f, 1f);
-                if (ColorScheme == 6)
-                    ColorTex = new Color(1f, 1f, 1f);
-                */
+                /* if (ColorScheme == 4)
+                     ColorTex = new Color(1f, 1f, 0f);
+                 if (ColorScheme == 5)
+                     ColorTex = new Color(0f, 1f, 1f);
+                 if (ColorScheme == 6)
+                     ColorTex = new Color(1f, 1f, 1f);
+                 */
 
-                if(Water2DType == "Regular" || Water2DType == "Refracting") 
+                if (Water2DType == "Regular" || Water2DType == "Refracting")
                     ColorTex = FillColor;
 
                 WaterDropsObjects[i].GetComponent<SpriteRenderer>().color = ColorTex;
@@ -500,10 +506,12 @@
                 WaterDropsObjects[i].GetComponent<MetaballParticleClass>().BlendingColor = Blending;
 
                 TrailRenderer tr = WaterDropsObjects[i].GetComponent<TrailRenderer>();
-                if (TrailStartSize <= 0f) {
+                if (TrailStartSize <= 0f)
+                {
                     tr.enabled = false;
                 }
-                else {
+                else
+                {
                     tr.enabled = true;
                     tr.startWidth = TrailStartSize;
                     tr.endWidth = TrailEndSize;
@@ -513,11 +521,11 @@
                 WaterDropsObjects[i].GetComponent<MetaballParticleClass>().SpawnerParent = this;
             }
 
-           
+
 
             AllBallsCount = WaterDropsObjects.Length;
 
-            if(Water2DEmissionType == EmissionType.ParticleSystem)
+            if (Water2DEmissionType == EmissionType.ParticleSystem)
             {
                 DropsUsed *= 0;
                 _spawnedDrops *= 0;
@@ -577,7 +585,7 @@
                     {
                         SetRefractingWaterparams(Intensity, Distortion, DistortionSpeed);
                     }
-                    else if(Water2DType == "Toon")
+                    else if (Water2DType == "Toon")
                     {
                         SetToonWaterparams(FillColor, StrokeColor, AlphaCutOff, AlphaStroke);
                     }
@@ -590,12 +598,12 @@
             }
             else
             {
-               
+
             }
 
-           
+
             //Check ShapeFill events
-            if(OnValidateShapeFill?.GetPersistentEventCount() > 0 && ShapeFillCollider2D != null)
+            if (OnValidateShapeFill?.GetPersistentEventCount() > 0 && ShapeFillCollider2D != null)
             {
                 StartCheckingFillShape();
             }
@@ -603,62 +611,70 @@
         }
 #endif
 
-       
 
 
-		public void Spawn(){
 
-			Spawn (DefaultCount);
-		}
+        public void Spawn()
+        {
 
-		public void Spawn(int count){
-			
+            Spawn(DefaultCount);
+        }
+
+        public void Spawn(int count)
+        {
+
             if (DelayBetweenParticles == 0f)
             {
                 DropsUsed *= 0;
                 SpawnAll();
             }
-            else {
+            else
+            {
                 DropsUsed *= 0;
                 StartCoroutine(loop(gameObject.transform.position, initSpeed, count));
             }
-			
-		}
 
-        public void SpawnAll() {
+        }
+
+        public void SpawnAll()
+        {
             SpawnAllParticles(gameObject.transform.position, initSpeed, DefaultCount);
         }
 
-		public void Spawn(int count, Vector3 pos){
-		
-			StartCoroutine (loop(pos, initSpeed, count));
-		}
+        public void Spawn(int count, Vector3 pos)
+        {
 
-		public void Spawn(int count, Vector3 pos, Vector2 InitVelocity, float delay = 0f){
-			
-			StartCoroutine (loop(pos, InitVelocity, count, delay));
-		}
+            StartCoroutine(loop(pos, initSpeed, count));
+        }
 
-		
+        public void Spawn(int count, Vector3 pos, Vector2 InitVelocity, float delay = 0f)
+        {
+
+            StartCoroutine(loop(pos, InitVelocity, count, delay));
+        }
+
+
         public void StopSpawning()
         {
             _breakLoop = true;
             IsSpawning = false;
         }
 
-		public void Restore()
-		{
+        public void Restore()
+        {
 
-			IsSpawning = false;
-			_breakLoop = true;
+            IsSpawning = false;
+            _breakLoop = true;
             DropsUsed *= 0;
 
-			
 
 
-			for (int i = 0; i < WaterDropsObjects.Length; i++) {
 
-                if (WaterDropsObjects[i] != null) {
+            for (int i = 0; i < WaterDropsObjects.Length; i++)
+            {
+
+                if (WaterDropsObjects[i] != null)
+                {
                     if (WaterDropsObjects[i].GetComponent<MetaballParticleClass>().Active == true)
                     {
                         WaterDropsObjects[i].GetComponent<MetaballParticleClass>().Active = false;
@@ -666,19 +682,19 @@
                     WaterDropsObjects[i].GetComponent<MetaballParticleClass>().witinTarget = false;
                 }
 
-                		
-			}
+
+            }
 
 
 
 
-			//gameObject.transform.localEulerAngles = Vector3.zero;
-			//initSpeed = new Vector2 (0, -2f);
+            //gameObject.transform.localEulerAngles = Vector3.zero;
+            //initSpeed = new Vector2 (0, -2f);
 
-			DefaultCount = AllBallsCount;
-			usableDropsCount = DefaultCount;
-			//Dynamic = false;
-		}
+            DefaultCount = AllBallsCount;
+            usableDropsCount = DefaultCount;
+            //Dynamic = false;
+        }
 
         int _spawnedDrops = 0;
         Color _lastFillColor;
@@ -696,7 +712,8 @@
             if (!SimulateInEditor)
                 return;
 
-            if (WaterDropsObjects == null || WaterDropsObjects.Length < 1) {
+            if (WaterDropsObjects == null || WaterDropsObjects.Length < 1)
+            {
                 SetupParticles();
                 return;
             }
@@ -712,7 +729,7 @@
                 //CHANGE COLOR
                 if (Water2DType == "Refracting")
                 {
-                   
+
                     if (MetaBall.Active == false)
                         MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
 
@@ -723,7 +740,7 @@
                     SetToonWaterparams(FillColor, StrokeColor, AlphaCutOff, AlphaStroke);
                 }
                 else if (Water2DType == "Regular")
-                {   
+                {
                     if (MetaBall.Active == false)
                         MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
 
@@ -737,13 +754,15 @@
 
                 _canInvokeAttheEnd = true;
 
-                if (LifeTime <= 0) {
+                if (LifeTime <= 0)
+                {
                     MetaBall.LifeTime = -1f;
                 }
-                else {
+                else
+                {
                     MetaBall.LifeTime = LifeTime;
                 }
-               
+
                 WaterDropsObjects[i].transform.position = transform.position;
                 MetaBall.Active = true;
                 MetaBall.witinTarget = false;
@@ -756,8 +775,8 @@
                     _initSpeed = initSpeed;
                     MetaBall.transform.localScale = new Vector3(size, size, 1f);
 
-                   
-                    
+
+
 
                     TrailRenderer tr = WaterDropsObjects[i].GetComponent<TrailRenderer>();
                     if (TrailStartSize <= 0f)
@@ -803,7 +822,7 @@
                     }
                     else if (Water2DType == "Regular")
                     {
-                      
+
                         _lastFillColor = FillColor;
                         if (MetaBall.Active == false)
                             MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
@@ -827,7 +846,7 @@
 
                 Vector2 dir = transform.localRotation * Vector2.down;
                 MetaBall.GetComponent<Rigidbody2D>().velocity = dir * Speed;
-               
+
 
                 DropsUsed++;
                 _spawnedDrops++;
@@ -838,7 +857,7 @@
                 if (_spawnedDrops >= DropCount)
                 {
 
-                    if(!Loop)
+                    if (!Loop)
                         SimulateInEditor = false;
 
                     //Invoke event End
@@ -856,13 +875,14 @@
                 return;
             }
 
-           
 
-           
+
+
         }
 
         bool _canInvokeAttheEnd = true;
-        IEnumerator loop(Vector3 _pos, Vector2 _initSpeed, int count = -1, float delay = 0f, bool waitBetweenDropSpawn = true){
+        IEnumerator loop(Vector3 _pos, Vector2 _initSpeed, int count = -1, float delay = 0f, bool waitBetweenDropSpawn = true)
+        {
 
             if (IsSpawning)
                 yield break;
@@ -870,32 +890,36 @@
             if (Water2DEmissionType == EmissionType.FillerCollider)
             { Debug.LogError("You're trying spawn particles in a Filler type. You should create a water spawner instead"); yield break; }
 
-            Physics2D.autoSimulation = true;
+            //Physics2D.autoSimulation = true;
+            Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
+
 
             IsSpawning = true;
 
-            yield return new WaitForSeconds (delay);
+            yield return new WaitForSeconds(delay);
 
-			_breakLoop = false;
+            _breakLoop = false;
 
-			
-			//int auxCount = 0;
+
+            //int auxCount = 0;
 
             //Invoke event Start
             InvokeOnSpawnerStart(gameObject);
 
-            while (true) {
-				for (int i = 0; i < WaterDropsObjects.Length; i++) {
+            while (true)
+            {
+                for (int i = 0; i < WaterDropsObjects.Length; i++)
+                {
 
-					if (_breakLoop)
-						yield break;
+                    if (_breakLoop)
+                        yield break;
 
-					MetaballParticleClass MetaBall = WaterDropsObjects [i].GetComponent<MetaballParticleClass> ();
+                    MetaballParticleClass MetaBall = WaterDropsObjects[i].GetComponent<MetaballParticleClass>();
 
-					if (MetaBall.Active == true)
-						continue;
+                    if (MetaBall.Active == true)
+                        continue;
 
-                    _canInvokeAttheEnd = true; 
+                    _canInvokeAttheEnd = true;
 
                     if (LifeTime <= 0)
                     {
@@ -906,21 +930,22 @@
                         MetaBall.LifeTime = LifeTime;
                     }
 
-                    WaterDropsObjects [i].transform.position = transform.position;
-					
+                    WaterDropsObjects[i].transform.position = transform.position;
 
-					if (_initSpeed == Vector2.zero)
-						_initSpeed = initSpeed;
 
-					if (DynamicChanges) {
-						_initSpeed = initSpeed;
-						MetaBall.transform.localScale = new Vector3 (size, size, 1f);
+                    if (_initSpeed == Vector2.zero)
+                        _initSpeed = initSpeed;
+
+                    if (DynamicChanges)
+                    {
+                        _initSpeed = initSpeed;
+                        MetaBall.transform.localScale = new Vector3(size, size, 1f);
 
                         //CHANGE COLOR
                         if (Water2DType == "Refracting")
                         {
                             SetRefractingWaterparams(Intensity, Distortion, DistortionSpeed);
-                           
+
                             if (MetaBall.Active == false)
                                 MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
                         }
@@ -930,7 +955,7 @@
                         }
                         else if (Water2DType == "Regular")
                         {
-                            
+
                             _lastFillColor = FillColor;
                             if (MetaBall.Active == false)
                                 MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
@@ -973,7 +998,7 @@
                     }
 
                     MetaBall.Active = true;
-                    MetaBall.witinTarget = false; 
+                    MetaBall.witinTarget = false;
 
 
                     //WaterDropsObjects [i].GetComponent<Rigidbody2D> ().velocity = _initSpeed;
@@ -996,14 +1021,14 @@
                     */
 
                     //print(Time.fixedDeltaTime / DelayBetweenParticles);
-					if(waitBetweenDropSpawn)
-						yield return new WaitForSeconds (DelayBetweenParticles);
+                    if (waitBetweenDropSpawn)
+                        yield return new WaitForSeconds(DelayBetweenParticles);
 
                     //Invoke event
                     InvokeOnSpawnerEmittinEachParticle(gameObject);
 
                 }
-				yield return new WaitForEndOfFrame ();
+                yield return new WaitForEndOfFrame();
 
                 if (_spawnedDrops >= DropCount)
                 {
@@ -1021,8 +1046,8 @@
                 }
 
 
-			}
-		}
+            }
+        }
 
         /// <summary>
         /// Spawn all particles together at the same time
@@ -1033,39 +1058,39 @@
         /// <param name="delay"></param>
         void SpawnAllParticles(Vector3 _pos, Vector2 _initSpeed, int count = -1, float delay = 0f)
         {
-           
+
 
             IsSpawning = true;
 
             int auxCount = 0;
-           // while (true)
+            // while (true)
             //{
-                for (int i = 0; i < WaterDropsObjects.Length; i++)
+            for (int i = 0; i < WaterDropsObjects.Length; i++)
+            {
+
+
+                MetaballParticleClass MetaBall = WaterDropsObjects[i].GetComponent<MetaballParticleClass>();
+
+                if (MetaBall.Active == true)
+                    continue;
+
+                MetaBall.LifeTime = LifeTime;
+                WaterDropsObjects[i].transform.position = transform.position;
+                MetaBall.Active = true;
+                MetaBall.witinTarget = false;
+
+                if (_initSpeed == Vector2.zero)
+                    _initSpeed = initSpeed;
+
+                if (DynamicChanges)
                 {
-
-
-                    MetaballParticleClass MetaBall = WaterDropsObjects[i].GetComponent<MetaballParticleClass>();
-
-                    if (MetaBall.Active == true)
-                        continue;
-
-                    MetaBall.LifeTime = LifeTime;
-                    WaterDropsObjects[i].transform.position = transform.position;
-                    MetaBall.Active = true;
-                    MetaBall.witinTarget = false;
-
-                    if (_initSpeed == Vector2.zero)
-                        _initSpeed = initSpeed;
-
-                    if (DynamicChanges)
-                    {
-                        _initSpeed = initSpeed;
-                        MetaBall.transform.localScale = new Vector3(size, size, 1f);
+                    _initSpeed = initSpeed;
+                    MetaBall.transform.localScale = new Vector3(size, size, 1f);
                     //CHANGE COLOR
                     if (Water2DType == "Refracting")
                     {
                         SetRefractingWaterparams(Intensity, Distortion, DistortionSpeed);
-                      
+
                         if (MetaBall.Active == false)
                             MetaBall.gameObject.GetComponent<SpriteRenderer>().color = FillColor;
                     }
@@ -1088,24 +1113,24 @@
                 WaterDropsObjects[i].GetComponent<Rigidbody2D>().velocity = _initSpeed;
 
 
-                    // Count limiter
-                    if (count > -1)
+                // Count limiter
+                if (count > -1)
+                {
+                    auxCount++;
+                    if (auxCount >= count && !Loop)
                     {
-                        auxCount++;
-                        if (auxCount >= count && !Loop)
-                        {
-                            break;
-                        }
+                        break;
                     }
-
-                    
-
                 }
-               
-                //alreadySpawned = true;
 
-             
-           // }
+
+
+            }
+
+            //alreadySpawned = true;
+
+
+            // }
         }
 
         public void InvokeOnShapeFill(GameObject obj, GameObject results)
@@ -1121,7 +1146,7 @@
 
         public void InvokeOnSpawnerStart(GameObject obj)
         {
-            if(OnSpawnerAboutStart != null)
+            if (OnSpawnerAboutStart != null)
                 OnSpawnerAboutStart.Invoke(obj, null);
 
         }
@@ -1144,15 +1169,16 @@
         int _lastSorting;
         public void SetRegularWaterparams(Color fill, Color fresnel, float alphaCutoff, float multiplier)
         {
-           
-            
+
+
             //WaterMaterial.SetColor("_StrokeColor", stroke);
             WaterMaterial.SetFloat("_constant", multiplier);
             WaterMaterial.SetFloat("_botmcut", alphaCutoff);
-           
+
             // I do use Stroke as Fresnel
             // Fresnel is a shared property since I've use camera to reach that effect
-            if(_lastStrokeColor != StrokeColor) {
+            if (_lastStrokeColor != StrokeColor)
+            {
                 _lastStrokeColor = StrokeColor;
                 MultiColorManager.SetFresnelColor(StrokeColor);
             }
@@ -1170,16 +1196,16 @@
         }
 
         public void SetToonWaterparams(Color fill, Color stroke, float alphaCutoff, float alphaStroke)
-		{
-			WaterMaterial.SetColor ("_Color", fill);
-            WaterMaterial.SetColor ("_StrokeColor", stroke);
+        {
+            WaterMaterial.SetColor("_Color", fill);
+            WaterMaterial.SetColor("_StrokeColor", stroke);
             WaterMaterial.SetFloat("_Cutoff", alphaCutoff);
             WaterMaterial.SetFloat("__Cutoff", alphaCutoff);
             WaterMaterial.SetFloat("_Stroke", alphaStroke);
 
 
 
-            MultiColorManager.SetColorScheme(ColorScheme, WaterMaterial, fill,stroke, alphaCutoff, alphaStroke);
+            MultiColorManager.SetColorScheme(ColorScheme, WaterMaterial, fill, stroke, alphaCutoff, alphaStroke);
 
             if (_lastSorting != Sorting)
             {
@@ -1191,11 +1217,11 @@
 
         public void SetRefractingWaterparams(float intensity, float mag, float speed)
         {
-            
+
             //WaterMaterial.SetColor("_TintColor", tint);
             WaterMaterial.SetFloat("_AmountOfTintColor", intensity);
-            WaterMaterial.SetFloat("_Mag", mag*10f);
-            WaterMaterial.SetFloat("_Speed", speed*10f);
+            WaterMaterial.SetFloat("_Mag", mag * 10f);
+            WaterMaterial.SetFloat("_Speed", speed * 10f);
 
             // I do use Stroke as Fresnel
             // Fresnel is a shared property since I've use camera to reach that effect
@@ -1222,7 +1248,7 @@
 
                     MetaballParticleClass MetaBall = WaterDropsObjects[i].GetComponent<MetaballParticleClass>();
 
-                  
+
 
                     //CHANGE COLOR
                     if (Water2DType == "Refracting")
@@ -1251,7 +1277,7 @@
                     MetaBall.Velocity_Limiter_X = SpeedLimiterX;
                     MetaBall.Velocity_Limiter_Y = SpeedLimiterY;
 
-                   
+
 
                     Rigidbody2D rb = MetaBall.GetComponent<Rigidbody2D>();
                     rb.sharedMaterial = PhysicMat;
@@ -1294,8 +1320,8 @@
         }
 
         void StartCheckingFillShape()
-        { 
-            if(!_checkOnFillRunning && !_checkOnFillComplete)
+        {
+            if (!_checkOnFillRunning && !_checkOnFillComplete)
             {
                 StartCoroutine(CheckOnFill(ShapeFillCollider2D, ShapeFillAccuracy));
             }
@@ -1305,7 +1331,7 @@
         {
 
             StartCoroutine(_restoreCheckingFillShapeEnum());
-            
+
         }
         IEnumerator _restoreCheckingFillShapeEnum()
         {
@@ -1329,12 +1355,12 @@
 
             Collider2D[] allOverlappingColliders = new Collider2D[DropCount];
 
-           
+
             int result = 0;
-            
+
             while (true)
             {
-                if(_breakCheckOnFill)
+                if (_breakCheckOnFill)
                 {
                     _checkOnFillRunning = false;
                     _breakCheckOnFill = false;
@@ -1357,17 +1383,18 @@
                 {
                     _trigged = (result >= DropCount * accuracy);
                 }
-               
 
-                if (_trigged) {
+
+                if (_trigged)
+                {
 
                     InvokeOnShapeFill(instance.gameObject, null);
-                    Debug.Log("Fill Event sucessful Complete! : droplives:" + DropsUsed +"   // "  + ((int)(DropsUsed*accuracy)).ToString() + "within the target");
+                    Debug.Log("Fill Event sucessful Complete! : droplives:" + DropsUsed + "   // " + ((int)(DropsUsed * accuracy)).ToString() + "within the target");
                     _checkOnFillComplete = true;
                     _breakCheckOnFill = true;
                 }
 
-                
+
 
             }
         }

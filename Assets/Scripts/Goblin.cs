@@ -18,7 +18,7 @@ public class Goblin : MonoBehaviour
 
 	GameObject fireEffect;
 
-	public GameObject _princess,_hero;
+	public GameObject _princess, _hero;
 
 	public float moveHorizontal, moveVertical = 0.0f;
 
@@ -59,7 +59,7 @@ public class Goblin : MonoBehaviour
 
 		if (runWayPoint)
 			moveHorizontal = 1.0f;
-		
+
 	}
 	// Start is called before the first frame update
 	void Start()
@@ -68,8 +68,8 @@ public class Goblin : MonoBehaviour
 		//_princess = GameObject.FindGameObjectWithTag("Princess");
 		//_hero = GameObject.FindGameObjectWithTag("Hero");
 
-		
-		switch(_currentType)
+
+		switch (_currentType)
 		{
 			case GoblinType.NO_WEAPON:
 				_skeleton.skeleton.SetSkin("default");
@@ -106,8 +106,8 @@ public class Goblin : MonoBehaviour
 		{
 			if (Mathf.Abs(transform.position.y - _hero.transform.position.y) <= 0.5f)
 			{
-				if(!CheckHitTarget(_hero.transform))
-				moveHorizontal = (transform.position.x > _hero.transform.position.x) ? -1.0f : 1.0f;
+				if (!CheckHitTarget(_hero.transform))
+					moveHorizontal = (transform.position.x > _hero.transform.position.x) ? -1.0f : 1.0f;
 				//Debug.Log("FIND");
 			}
 		}
@@ -115,8 +115,8 @@ public class Goblin : MonoBehaviour
 		{
 			if (Mathf.Abs(transform.position.y - _princess.transform.position.y) <= 0.5f)
 			{
-				if(!CheckHitTarget(_princess.transform))
-				moveHorizontal = (transform.position.x > _princess.transform.position.x) ? -1.0f : 1.0f;
+				if (!CheckHitTarget(_princess.transform))
+					moveHorizontal = (transform.position.x > _princess.transform.position.x) ? -1.0f : 1.0f;
 				//Debug.Log("FIND");
 			}
 		}
@@ -127,7 +127,7 @@ public class Goblin : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		
+
 	}
 
 	void FixedUpdate()
@@ -204,8 +204,8 @@ public class Goblin : MonoBehaviour
 		{
 			_princess = GameObject.FindGameObjectWithTag("Princess");
 			_princess.GetComponent<Princess>().SwitchState(Princess.PlayerState.Die);
-		}	
-			
+		}
+
 
 		Level._instance._hero.isDied = true;
 		Level._instance._hero.SwitchState(Hero.PlayerState.Die);
@@ -230,7 +230,7 @@ public class Goblin : MonoBehaviour
 			StartCoroutine(EndTheLevel());
 		}
 
-		
+
 		if (collision.gameObject.tag == "Magma")
 		{
 			if (!isDied)
@@ -243,25 +243,25 @@ public class Goblin : MonoBehaviour
 			}
 			else
 				Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Lava"));
-			if(LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
+			if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
 				&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
 			{
 				GameManager.instance.GameWin();
 				if (_hero != null)
 					_hero.GetComponent<Hero>().SwitchState(Hero.PlayerState.Win);
-			}	
-				
+			}
+
 
 		}
 
-		if(collision.gameObject.tag == "Saw")
+		if (collision.gameObject.tag == "Saw")
 		{
 			if (!isDied)
 			{
 				isDied = true;
 				GameManager.instance._totalGoblinKilled++;
 				SwitchState(PlayerState.Die);
-				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel -1] == LevelManager.LEVEL_TYPE.GOBLIN
+				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
 					&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
 				{
 					GameManager.instance.GameWin();
@@ -273,14 +273,14 @@ public class Goblin : MonoBehaviour
 		}
 
 		if ((collision.gameObject.tag == "Chest" ||
-			collision.gameObject.tag == "Sword"|| collision.gameObject.tag == "Rock" || collision.gameObject.tag == "Weight" ) && transform.position.y < collision.transform.position.y)
+			collision.gameObject.tag == "Sword" || collision.gameObject.tag == "Rock" || collision.gameObject.tag == "Weight") && transform.position.y < collision.transform.position.y)
 		{
 			if (!isDied)
 			{
 				isDied = true;
 				GameManager.instance._totalGoblinKilled++;
 				SwitchState(PlayerState.Die);
-				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel -1] == LevelManager.LEVEL_TYPE.GOBLIN
+				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
 					&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
 				{
 					GameManager.instance.GameWin();
@@ -301,7 +301,7 @@ public class Goblin : MonoBehaviour
 				SwitchState(PlayerState.Die);
 				//fireEffect.GetComponent<ParticleSystem>().Play();
 				//Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Air"));
-				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel-1] == LevelManager.LEVEL_TYPE.GOBLIN
+				if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
 					&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
 				{
 					GameManager.instance.GameWin();
@@ -321,10 +321,10 @@ public class Goblin : MonoBehaviour
 			else
 				moveHorizontal = -1.0f;
 		}
-		}
+	}
 	private void OnCollisionStay2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Rock" && !_isWin &&  !isDied)
+		if (collision.gameObject.tag == "Rock" && !_isWin && !isDied)
 		{
 			if (moveHorizontal != 0.0f)
 				_rigidbody.AddForce(new Vector2(0.0f, 150.0f));
@@ -335,8 +335,47 @@ public class Goblin : MonoBehaviour
 	{
 		moveHorizontal = 0.0f;
 		isDied = true;
-		if(!this._skeleton.skeleton.FlipX)
-		_rigidbody.AddForce(new Vector2(-100.0f, 0.0f));
+
+		// Kiểm tra hướng dựa trên ScaleX thay vì FlipX
+		if (this._skeleton.skeleton.ScaleX > 0)
+			_rigidbody.AddForce(new Vector2(-100.0f, 0.0f));
+		else
+			_rigidbody.AddForce(new Vector2(100.0f, 0.0f));
+
+		SwitchState(PlayerState.Idle);
+		StartCoroutine(GetDamageIE());
+	}
+
+	IEnumerator GetDamageIE()
+	{
+		yield return new WaitForSeconds(1.0f);
+
+		// Kiểm tra hướng dựa trên ScaleX thay vì FlipX
+		if (this._skeleton.skeleton.ScaleX > 0)
+			_rigidbody.AddForce(new Vector2(-200.0f, 0.0f));
+		else
+			_rigidbody.AddForce(new Vector2(200.0f, 0.0f));
+
+		SwitchState(PlayerState.Die);
+		GameManager.instance._totalGoblinKilled++;
+
+		// Kiểm tra điều kiện chiến thắng
+		if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
+			&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
+		{
+			GameManager.instance.GameWin();
+			if (_hero != null)
+				_hero.GetComponent<Hero>().SwitchState(Hero.PlayerState.Win);
+		}
+	}
+
+	/*
+	public void GetDamage()
+	{
+		moveHorizontal = 0.0f;
+		isDied = true;
+		if (!this._skeleton.skeleton.FlipX)
+			_rigidbody.AddForce(new Vector2(-100.0f, 0.0f));
 		else
 			_rigidbody.AddForce(new Vector2(100.0f, 0.0f));
 		SwitchState(PlayerState.Idle);
@@ -352,8 +391,8 @@ public class Goblin : MonoBehaviour
 			_rigidbody.AddForce(new Vector2(200.0f, 0.0f));
 		SwitchState(PlayerState.Die);
 		GameManager.instance._totalGoblinKilled++;
-	//	Debug.Log("Goblin " + GameManager.instance._totalGoblinKilled + " " + GameManager.instance._totalGoblin + " " + LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel]);
-		if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel-1] == LevelManager.LEVEL_TYPE.GOBLIN
+		//	Debug.Log("Goblin " + GameManager.instance._totalGoblinKilled + " " + GameManager.instance._totalGoblin + " " + LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel]);
+		if (LevelManager._instance.levelTypeLst[LevelManager._instance.currentLevel - 1] == LevelManager.LEVEL_TYPE.GOBLIN
 					&& GameManager.instance._totalGoblinKilled == GameManager.instance._totalGoblin)
 		{
 			GameManager.instance.GameWin();
@@ -362,21 +401,22 @@ public class Goblin : MonoBehaviour
 		}
 
 	}
+	*/
 
 	bool CheckHitTarget(Transform _target)
 	{
 		bool _check = false;
-		RaycastHit2D _hitObj = Physics2D.Raycast(transform.position, _target.position - transform.position, Vector3.Distance(_target.position , transform.position), LayerMask.GetMask("Static"));
+		RaycastHit2D _hitObj = Physics2D.Raycast(transform.position, _target.position - transform.position, Vector3.Distance(_target.position, transform.position), LayerMask.GetMask("Static"));
 		//Debug.DrawRay(transform.position, _target.position - transform.position, Color.green);
 		//foreach (RaycastHit2D hitObj in _hit)
 		//	Debug.Log("HIT " + _hitObj.collider.gameObject.name);
-		
+
 		if (_hitObj)
 		{
 			_check = true;
 			//Debug.Log("HIT " + _hitObj.collider.gameObject.name);
 		}
-			
+
 		return _check;
 	}
 
