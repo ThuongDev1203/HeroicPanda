@@ -11,13 +11,13 @@ public class Magma : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -25,7 +25,7 @@ public class Magma : MonoBehaviour
         if (collision.gameObject.tag == "Water" && convert == false)
         {
             convert = true;
-            GameObject _rockObj1 = (GameObject) Instantiate(_rock, transform.position, transform.rotation);
+            GameObject _rockObj1 = (GameObject)Instantiate(_rock, transform.position, transform.rotation);
             SoundManager.Instance.Play(SoundManager.Instance._rock);
             // LevelPool._instance.AddObject(_rockObj1);
             Destroy(gameObject);
@@ -34,11 +34,11 @@ public class Magma : MonoBehaviour
 
         if (collision.gameObject.tag == "Rock" & convert == false)
         {
-             convert = true;
-             GameObject _rockObj2 = (GameObject)Instantiate(_rock, transform.position, transform.rotation);
-          //  LevelPool._instance.AddObject(_rockObj2);
+            convert = true;
+            GameObject _rockObj2 = (GameObject)Instantiate(_rock, transform.position, transform.rotation);
+            //  LevelPool._instance.AddObject(_rockObj2);
             Destroy(gameObject);
-           
+
         }
 
     }

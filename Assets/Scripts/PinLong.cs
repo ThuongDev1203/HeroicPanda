@@ -65,8 +65,10 @@ public class PinLong : MonoBehaviour
 
 	public void Update()
 	{
-		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		if (GameManager.instance == null || GameManager.instance.isGameOver || GameManager.instance.isGameWin)
+		{
 			return;
+		}
 		/*
 		if (Input.touches.Length > 0)
 		{

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     public bool isGameOver, isGameWin = false;
 
-    public int currentCoin,bonusCoin, _life, _totalGoblin,_totalGoblinKilled; 
+    public int currentCoin, bonusCoin, _life, _totalGoblin, _totalGoblinKilled;
 
     private void Awake()
     {
@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
         currentCoin = PlayerPrefs.GetInt("Coin");
         _life = PlayerPrefs.GetInt("Life");
         _totalGoblinKilled = 0;
-        if(GameObject.FindGameObjectWithTag("Goblin") != null)
-        _totalGoblin = GameObject.FindGameObjectsWithTag("Goblin").Length;
+        if (GameObject.FindGameObjectWithTag("Goblin") != null)
+            _totalGoblin = GameObject.FindGameObjectsWithTag("Goblin").Length;
         UIManager._instance.ShowCoinText(UIManager._instance.coinGamePlayText, currentCoin);
         UIManager._instance.UpdateLife(_life);
     }
@@ -34,14 +34,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddCoin(int add)
     {
         currentCoin += add;
         UIManager._instance.ShowCoinText(UIManager._instance.coinGamePlayText, currentCoin);
-    }    
+    }
 
     public void GameOver()
     {
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetCollision()
     {
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Goblin"),false);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Lava"),false);
-    }    
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Goblin"), false);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Hero"), LayerMask.NameToLayer("Lava"), false);
+    }
 }

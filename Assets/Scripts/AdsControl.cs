@@ -717,7 +717,7 @@ public class AdsControl : MonoBehaviour, IUnityAdsInitializationListener, IUnity
             }
         }
         */
-        
+
         int numberShow = PlayerPrefs.GetInt("ShowAds");
 
         if (numberShow < 3)
@@ -755,7 +755,7 @@ public class AdsControl : MonoBehaviour, IUnityAdsInitializationListener, IUnity
             }
 
         }
-        
+
     }
 
     public void RemoveAds()
@@ -765,7 +765,7 @@ public class AdsControl : MonoBehaviour, IUnityAdsInitializationListener, IUnity
         //if banner is active and user bought remove ads the banner will automatically hide
         HideBannerAd();
         DestroyBannerAd();
-       
+
     }
 
     public bool IsRemoveAds()

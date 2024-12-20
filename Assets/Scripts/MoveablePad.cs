@@ -8,7 +8,7 @@ public class MoveablePad : MonoBehaviour
 
     RaycastHit2D hit;
 
-    Transform leftPoint, rightPoint,centerPoint;
+    Transform leftPoint, rightPoint, centerPoint;
 
     bool isMoving = false;
 
@@ -35,7 +35,7 @@ public class MoveablePad : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
-            hit = Physics2D.Raycast(mousePos2D, Vector2.zero,1.0f, LayerMask.GetMask("Ignore Raycast"));
+            hit = Physics2D.Raycast(mousePos2D, Vector2.zero, 1.0f, LayerMask.GetMask("Ignore Raycast"));
 
             if (hit.collider == null)
                 return;
@@ -43,7 +43,7 @@ public class MoveablePad : MonoBehaviour
             {
                 if (isMoving)
                     return;
-                if(isVertical)
+                if (isVertical)
                 {
                     if (boxZone.localPosition.x < centerPoint.localPosition.x)
                     {
@@ -65,23 +65,23 @@ public class MoveablePad : MonoBehaviour
                 {
                     if (boxZone.localPosition.y > centerPoint.localPosition.y)
                     {
-                     
+
                         StartCoroutine(MoveObject(boxZone, boxZone.localPosition, leftPoint.localPosition, 0.5f));
                     }
 
                     else
                     {
-                       
+
                         StartCoroutine(MoveObject(boxZone, boxZone.localPosition, rightPoint.localPosition, 0.5f));
                     }
                 }
-                
-                   
+
+
             }
         }
 
-        
-        
+
+
     }
     IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time)
     {

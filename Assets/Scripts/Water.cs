@@ -5,7 +5,7 @@ using UnityEngine;
 public class Water : MonoBehaviour
 {
 
-    public GameObject _rock,_smoke;
+    public GameObject _rock, _smoke;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,15 +22,15 @@ public class Water : MonoBehaviour
     {
         if (collision.gameObject.tag == "Magma")
         {
-             GameObject _smokeObj = (GameObject)Instantiate(_smoke, transform.position, transform.rotation);
-             Destroy(_smokeObj, 3.0f);
-             Destroy(gameObject);
-          
+            GameObject _smokeObj = (GameObject)Instantiate(_smoke, transform.position, transform.rotation);
+            Destroy(_smokeObj, 3.0f);
+            Destroy(gameObject);
+
         }
         if (collision.gameObject.tag == "Rock")
         {
             Destroy(gameObject);
-          
+
         }
     }
 }

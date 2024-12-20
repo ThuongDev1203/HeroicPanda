@@ -55,7 +55,7 @@ public class LevelSelector : MonoBehaviour
             // Ẩn số màn chơi nếu màn bị khóa
             Text levelText = levelItemLst[i].Find("LevelText").GetComponent<Text>();
             levelText.text = "";
-            
+
             if (levelNumber <= _lockLevel)
             {
                 levelText.text = levelNumber.ToString();

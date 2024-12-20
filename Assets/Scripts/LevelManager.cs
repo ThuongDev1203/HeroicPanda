@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     };
 
     public LEVEL_TYPE[] levelTypeLst;
-    
+
 
     private void Awake()
     {
@@ -36,13 +36,13 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void LoadLevel()
@@ -50,12 +50,12 @@ public class LevelManager : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt("CurrentLevel");
         currentLevelObj = (GameObject)Instantiate(Resources.Load<GameObject>("levels/Level " + currentLevel.ToString()));
 
-        if(currentLevel >=1 && currentLevel <= 25)
+        if (currentLevel >= 1 && currentLevel <= 25)
         {
             bg1.SetActive(true);
             bg2.SetActive(false);
             bg3.SetActive(false);
-        }    
+        }
         else
             if (currentLevel >= 26 && currentLevel <= 50)
         {
@@ -76,5 +76,5 @@ public class LevelManager : MonoBehaviour
     {
         Destroy(currentLevelObj);
         LevelPool._instance.CleanAlllObjects();
-    }    
+    }
 }

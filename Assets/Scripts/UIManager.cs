@@ -329,7 +329,6 @@ public class UIManager : MonoBehaviour
         switch (life)
         {
             case 0:
-
                 frontLife1.SetActive(false);
                 frontLife2.SetActive(false);
                 frontLife3.SetActive(false);
@@ -337,11 +336,8 @@ public class UIManager : MonoBehaviour
                 frontLifeInGame1.SetActive(false);
                 frontLifeInGame2.SetActive(false);
                 frontLifeInGame3.SetActive(false);
-
                 break;
             case 1:
-
-
                 frontLife1.SetActive(true);
                 frontLife2.SetActive(false);
                 frontLife3.SetActive(false);
@@ -349,31 +345,22 @@ public class UIManager : MonoBehaviour
                 frontLifeInGame1.SetActive(true);
                 frontLifeInGame2.SetActive(false);
                 frontLifeInGame3.SetActive(false);
-
                 break;
             case 2:
-
-
                 frontLife1.SetActive(true);
                 frontLife2.SetActive(true);
                 frontLife3.SetActive(false);
-
                 frontLifeInGame1.SetActive(true);
                 frontLifeInGame2.SetActive(true);
                 frontLifeInGame3.SetActive(false);
-
                 break;
             case 3:
-
-
                 frontLife1.SetActive(true);
                 frontLife2.SetActive(true);
                 frontLife3.SetActive(true);
-
                 frontLifeInGame1.SetActive(true);
                 frontLifeInGame2.SetActive(true);
                 frontLifeInGame3.SetActive(true);
-
                 break;
         }
     }

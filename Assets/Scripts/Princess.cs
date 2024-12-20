@@ -5,33 +5,33 @@ using Spine.Unity;
 
 public class Princess : MonoBehaviour
 {
-    SkeletonAnimation _skeleton;
+	SkeletonAnimation _skeleton;
 
-    Rigidbody2D _rigidbody;
+	Rigidbody2D _rigidbody;
 
 	GameObject fireEffect;
 
-    public float speed;
+	public float speed;
 
-    [Header("STATE")]
-    public PlayerState state;
+	[Header("STATE")]
+	public PlayerState state;
 
-    public bool _isWin = false;
+	public bool _isWin = false;
 
-    public enum PlayerState
-    {
-        Idle,
-        Move,
-        Crouch,
-        Jump,
-        Die,
-        Win
-    }
+	public enum PlayerState
+	{
+		Idle,
+		Move,
+		Crouch,
+		Jump,
+		Die,
+		Win
+	}
 
-    public bool isDied = false;
-    // Start is called before the first frame update
-    void Start()
-    {
+	public bool isDied = false;
+	// Start is called before the first frame update
+	void Start()
+	{
 		_rigidbody = GetComponent<Rigidbody2D>();
 
 		_skeleton = transform.GetChild(0).GetComponent<SkeletonAnimation>();
@@ -39,14 +39,14 @@ public class Princess : MonoBehaviour
 		fireEffect = transform.GetChild(1).gameObject;
 
 		_skeleton.AnimationState.SetAnimation(0, "idle", true);
-		
+
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// Update is called once per frame
+	void Update()
+	{
+
+	}
 	void FixedUpdate()
 	{
 		if (GameManager.instance.isGameOver || GameManager.instance.isGameWin)
@@ -98,7 +98,7 @@ public class Princess : MonoBehaviour
 
 		if (collision.gameObject.tag == "Magma")
 		{
-			if(!isDied)
+			if (!isDied)
 			{
 				isDied = true;
 				SwitchState(PlayerState.Die);
@@ -113,15 +113,15 @@ public class Princess : MonoBehaviour
 		}
 
 
-		if ((collision.gameObject.tag == "Weight" || collision.gameObject.tag == "Rock" || collision.gameObject.tag == "Saw") & (transform.position.y + 0.5f)< collision.transform.position.y)
+		if ((collision.gameObject.tag == "Weight" || collision.gameObject.tag == "Rock" || collision.gameObject.tag == "Saw") & (transform.position.y + 0.5f) < collision.transform.position.y)
 		{
 			if (!isDied)
 			{
 				isDied = true;
-				SwitchState(PlayerState.Die);		
+				SwitchState(PlayerState.Die);
 				GameManager.instance.GameOver();
 			}
-			
+
 
 		}
 

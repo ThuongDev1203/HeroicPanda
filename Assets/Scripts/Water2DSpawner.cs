@@ -17,7 +17,7 @@ public class Water2DSpawner : MonoBehaviour
         for (int i = 0; i < WaterDropsObjects.Length; i++)
         {
             Vector3 pos = new Vector3(gameObject.transform.position.x + Random.Range(-0.25f, 0.25f),
-                   gameObject.transform.position.y + Random.Range(-0.25f, 0.25f), 0.0f);
+                gameObject.transform.position.y + Random.Range(-0.25f, 0.25f), 0.0f);
             WaterDropsObjects[i] = Instantiate(DropObject, pos, new Quaternion(0, 0, 0, 0)) as GameObject;
             //WaterDropsObjects[i].GetComponent<MetaballParticleClass>().Active = false;
             WaterDropsObjects[i].transform.localScale = new Vector3(size, size, 1f);
@@ -27,9 +27,9 @@ public class Water2DSpawner : MonoBehaviour
 
         }
     }
-        // Update is called once per frame
-        void Update()
+    // Update is called once per frame
+    void Update()
     {
-        
+
     }
 }

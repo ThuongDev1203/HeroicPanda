@@ -9,7 +9,7 @@ public class Rope : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -22,7 +22,7 @@ public class Rope : MonoBehaviour
 
             hit = Physics2D.Raycast(mousePos2D, Vector2.zero, 1.0f, LayerMask.GetMask("Rope"));
 
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 if (hit.collider.gameObject.name == this.transform.gameObject.name)
                     Destroy(transform.parent.gameObject);
