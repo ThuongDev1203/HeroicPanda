@@ -27,7 +27,6 @@ public class UIManager : MonoBehaviour
     public Image[] doneResultLst = new Image[5];
 
     public GameObject frontLife1, frontLife2, frontLife3, frontLifeInGame1, frontLifeInGame2, frontLifeInGame3;
-
     private void Awake()
     {
         _instance = this;
@@ -39,6 +38,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         SetIconInLevel();
+
+
     }
 
     // Update is called once per frame
@@ -46,6 +47,7 @@ public class UIManager : MonoBehaviour
     {
 
     }
+
 
     public void ShowLevelPanel()
     {
